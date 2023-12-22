@@ -7,22 +7,21 @@ const passport = require('../config/passport-local-strategy');
 module.exports.signup = async function (req, res) {
   try {
     const { name, email, password, confirmPassword } = req.body;
-
-    // Validation (you might want to add more validation checks)
+    console.log('Received data:', { name, email, password, confirmPassword });
     if (password !== confirmPassword) {
       return res.status(400).json({ error: 'Passwords do not match' });
     }
 
-    // Check if the email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
-    // Hash the password using bcrypt
+    // Hashing the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('Hashed password:', hashedPassword);
 
-    // Create a new user
+    // Creating a new user
     const newUser = await User.create({
       name,
       email,

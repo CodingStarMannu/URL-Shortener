@@ -8,8 +8,6 @@ const app = express();
 
 const port = 3000;
 
-
-
 app.use(session({
     secret:'my_secret-key', 
     resave: false,
@@ -23,8 +21,9 @@ app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 
 
-app.use(express.json());
 
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
 // express router
 app.use('/', require('./routes'));  
