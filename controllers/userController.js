@@ -1,7 +1,7 @@
-
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const passport = require('../config/passport-local-strategy');
+
 
 // Controller for user signup
 module.exports.signup = async function (req, res) {
@@ -45,12 +45,19 @@ module.exports.login = function (req, res, next) {
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
-    req.logIn(user, function (err) {
+
+    req.logIn(user, async function (err) {
       if (err) {
         console.error(`Error in user login: ${err}`);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-      return res.status(200).json({ message: 'Login successful' });
+
+      const token = user.token;
+
+      console.log('Generated Token in log in:', token);
+
+      // Send the token in the response
+      return res.status(200).json({ message: 'Login successful', token });
     });
   })(req, res, next);
 };

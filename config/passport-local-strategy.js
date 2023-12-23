@@ -1,7 +1,14 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+
+// Function to generate authentication token
+function generateAuthToken(user) {
+  const token = jwt.sign({ userId: user.id }, 'my_secret-key', { expiresIn: '1h' });
+  return token;
+}
 
 const local = new LocalStrategy({ usernameField: 'email' }, async function (email, password, done) {
   try {
@@ -11,8 +18,12 @@ const local = new LocalStrategy({ usernameField: 'email' }, async function (emai
       console.log('Invalid Username/Password');
       return done(null, false);
     }
-    
-    return done(null, user);
+
+    // Generate authentication token
+    user.token = generateAuthToken(user);
+    console.log('Generated Token:', user.token);
+
+    return done(null, user, { token: user.token }); 
   } catch (error) {
     console.log(`Error in finding user: ${error}`);
     return done(error);

@@ -5,8 +5,12 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const app = express();
+const cors = require('cors');
+const path = require("path");
 
-const port = 3000;
+
+const port = process.env.PORT;
+
 
 app.use(session({
     secret:'my_secret-key', 
@@ -20,8 +24,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 
+app.use(express.static(path.join(__dirname, "build")));
 
-
+app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
