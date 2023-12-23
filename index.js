@@ -3,7 +3,7 @@ const express = require('express');
 require('./config/mongoose');
 const session = require('express-session');
 const passport = require('passport');
-require('./config/passport-local-strategy');
+const passportLocal = require('./config/passport-local-strategy');
 const app = express();
 const cors = require('cors');
 const path = require("path");
@@ -13,7 +13,7 @@ const port = 3000;
 
 
 app.use(session({
-    secret:[process.env.SECRET_KEY], 
+    secret:'my_secret-key', 
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 86400000 } 
