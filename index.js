@@ -9,7 +9,7 @@ const cors = require('cors');
 const path = require("path");
 
 
-const port = process.env.PORT;
+const port = 3000;
 
 
 app.use(session({
