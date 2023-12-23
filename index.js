@@ -3,7 +3,7 @@ const express = require('express');
 require('./config/mongoose');
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy');
+require('./config/passport-local-strategy');
 const app = express();
 const cors = require('cors');
 const path = require("path");
